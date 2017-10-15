@@ -10,25 +10,50 @@ class GroovyCalcTestCase extends GroovyTestCase {
     void testAddOutput() {
         def originalPrintStream = System.out
         def printMock = new PrintMock ()
-        System.out = printMock
+
+        printMock.println "hello"
+        assert printMock.textOutput == "hello"
+
+        def ans
 
         def calc = new Calc()
+        System.out = printMock
         try {
-            calc.add (1,2)
+            ans = calc.add (1,2)
         } finally {
             System.out = originalPrintStream
         }
 
-        assertEquals "calc ans=3", printMock.output
+        assertEquals 3, ans
+        assertEquals "expected ans as 3 ", "calc ans=3", printMock.textOutput
     }
 
+    void testMultiplyOutput () {
+        def testCalc = new Calc ()
 
+        def fileMock = groovy.mock.interceptor.StubFor (java.io.FileWriter)
+        def resultText
+
+        fileMock.demand.write {resultText = it.toString()}
+        fileMock.demand.close {}
+
+        fileMock.use {
+            testCalc.multiply(2, 2)
+        }
+
+        assertEquals
+    }
 }
 
 class PrintMock extends PrintStream {
     PrintMock() {super(System.out)}
 
-    def output
+    def textOutput
 
-    void println (text) {output = text}
+    @Override
+    void println (String text) {
+        textOutput = text
+
+        def var = 1
+    }
 }
