@@ -31,17 +31,21 @@ class GroovyCalcTestCase extends GroovyTestCase {
     void testMultiplyOutput () {
         def testCalc = new Calc ()
 
-        def fileMock = groovy.mock.interceptor.StubFor (java.io.FileWriter)
         def resultText
+        //create stub
+        def fileMock = new groovy.mock.interceptor.StubFor (java.io.FileWriter)
 
+        //setup the behaviour by attching the closures for the methods that will be used like 'write'
         fileMock.demand.write {resultText = it.toString()}
         fileMock.demand.close {}
 
+        //now trcik your method under test to use the stub
         fileMock.use {
             testCalc.multiply(2, 2)
         }
 
-        assertEquals
+        //now the test - the string should have been copied into resultText
+        assertEquals "the answer is : 4", resultText
     }
 }
 
