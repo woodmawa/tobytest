@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="tobytest_main" target="1.7" />
+      <module name="tobytest_test" target="1.7" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
